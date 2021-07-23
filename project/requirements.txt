@@ -1,0 +1,11 @@
+Django
+djangorestframework
+pytest
+pytest-django
+celery==4.4.7
+flower==0.9.7
+redis==3.5.3
+requests
+beautifulsoup4==4.9.3
+django-extensions
+psycopg2-binary>=2.8
