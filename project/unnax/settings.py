@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-g@1r1st6we014y7#^n6d-$e)fcfj%ba=!h0oib^^ni4@w(&*97
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -86,7 +86,7 @@ WSGI_APPLICATION = "unnax.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "dock",
+        "NAME": "unnax",
         "USER": "postgres",
         "PASSWORD": "j9714697",
         "HOST": "localhost",
