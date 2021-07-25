@@ -22,78 +22,95 @@ class Scraping:
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
         }
-        response = response.post(url, headers=headers, data=payload)
-        cookies = response.request.headers.get("Cookie")
+
+        try:
+            response = response.post(url, headers=headers, data=payload)
+            cookies = response.request.headers.get("Cookie")
+        except:
+            return f"Problem getting data from {url}"
 
         # Get customer data
-        url = f"{unnax_base_url}customer"
-        headers["Cookie"] = cookies
-        response = requests.request("GET", url, headers=headers)
-        soup = BeautifulSoup(response.text, "html.parser")
-        customer_name = soup.find_all("li", {"class": "collection-header"})
-        self.data["customer"]["name"] = customer_name[0].text
-        customer_data = soup.find_all("li", {"class": "collection-item"})
-        self.data["customer"]["phone"] = customer_data[0].text.replace(" ", "")
-        self.data["customer"]["email"] = customer_data[1].text
-        self.data["customer"]["address"] = customer_data[2].text
-        self.data["customer"]["doc"] = doc
-        self.data["customer"]["participation"] = "Titular"
-        currencies = {
-            "€": "EUR",
-            "$": "USD",
-            "¥": "JPY",
-        }
-        url = f"{unnax_base_url}account"
-        html_accounts = requests.get(url, headers=headers).text
-        soup = BeautifulSoup(html_accounts, "html.parser")
-        accounts = soup.find_all("li", {"class": "collection-item avatar"})
-        for ac in accounts:
-            ac_balance = ac.find("p").text.replace("\n", "").split(" ")
-            number = ac_balance[0]
-            currency = currencies.get(ac_balance[1][0], ac_balance[1][0])
-            balance = ac_balance[1][1:]
-            name = ac.find("span", {"class": "title"}).text
-            account = {
-                "name": name,
-                "number": number,
-                "currency": currency,
-                "balance": balance,
-                "statements": [],
-            }
-            statements_url = ac.find("a")["href"]
-            # Get the staments of each account
-            response = requests.request(
-                "GET",
-                f"{unnax_base_url}{statements_url}",
-                headers={"Cookie": cookies},
-            )
+        try:
+            url = f"{unnax_base_url}customer"
+            headers["Cookie"] = cookies
+            response = requests.request("GET", url, headers=headers)
             soup = BeautifulSoup(response.text, "html.parser")
-            account_statements = [
-                x.find_all("td") for x in soup.find_all("tbody")[0].find_all("tr")
-            ]
-            for bba in account_statements:
-                date_base = bba[1].text
-                date = date_base[6:] + "-" + date_base[3:5] + "-" + date_base[:2]
-                amount = (
-                    bba[2].text[1:]
-                    if not bba[2].get("class")
-                    else f"-{bba[2].text[1:]}"
-                )
-                balance = (
-                    bba[3].text[1:]
-                    if not bba[3].get("class")
-                    else f"-{bba[3].text[1:]}"
-                )
-                concept = bba[0].text
-                statement = {
-                    "date": date,
-                    "amount": amount,
+            customer_name = soup.find_all("li", {"class": "collection-header"})
+            self.data["customer"]["name"] = customer_name[0].text
+            customer_data = soup.find_all("li", {"class": "collection-item"})
+            self.data["customer"]["phone"] = customer_data[0].text.replace(" ", "")
+            self.data["customer"]["email"] = customer_data[1].text
+            self.data["customer"]["address"] = customer_data[2].text
+            self.data["customer"]["doc"] = doc
+            self.data["customer"]["participation"] = "Titular"
+            currencies = {
+                "€": "EUR",
+                "$": "USD",
+                "¥": "JPY",
+            }
+        except:
+            return f"Problem getting data from {url}"
+
+        try:
+            url = f"{unnax_base_url}account"
+            html_accounts = requests.get(url, headers=headers).text
+            soup = BeautifulSoup(html_accounts, "html.parser")
+            accounts = soup.find_all("li", {"class": "collection-item avatar"})
+            for ac in accounts:
+                ac_balance = ac.find("p").text.replace("\n", "").split(" ")
+                number = ac_balance[0]
+                currency = currencies.get(ac_balance[1][0], ac_balance[1][0])
+                balance = ac_balance[1][1:]
+                name = ac.find("span", {"class": "title"}).text
+                account = {
+                    "name": name,
+                    "number": number,
+                    "currency": currency,
                     "balance": balance,
-                    "concept": concept,
+                    "statements": [],
                 }
-                account["statements"].append(statement)
-            self.data["accounts"].append(account)
-            # print(self.data)
+                statements_url = ac.find("a")["href"]
+                try:
+                    # Get the staments of each account
+                    response = requests.request(
+                        "GET",
+                        f"{unnax_base_url}{statements_url}",
+                        headers={"Cookie": cookies},
+                    )
+                    soup = BeautifulSoup(response.text, "html.parser")
+                    account_statements = [
+                        x.find_all("td")
+                        for x in soup.find_all("tbody")[0].find_all("tr")
+                    ]
+                    for bba in account_statements:
+                        date_base = bba[1].text
+                        date = (
+                            date_base[6:] + "-" + date_base[3:5] + "-" + date_base[:2]
+                        )
+                        amount = (
+                            bba[2].text[1:]
+                            if not bba[2].get("class")
+                            else f"-{bba[2].text[1:]}"
+                        )
+                        balance = (
+                            bba[3].text[1:]
+                            if not bba[3].get("class")
+                            else f"-{bba[3].text[1:]}"
+                        )
+                        concept = bba[0].text
+                        statement = {
+                            "date": date,
+                            "amount": amount,
+                            "balance": balance,
+                            "concept": concept,
+                        }
+                        account["statements"].append(statement)
+                    self.data["accounts"].append(account)
+                except Exception as e:
+                    return f"Problem getting data from {statements_url}"
+        except Exception as e:
+            return f"Problem getting data from {url}"
+        return "OK"
 
     def print_data(self):
         doc = self.username

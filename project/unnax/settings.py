@@ -15,6 +15,7 @@ import logging
 from pathlib import Path
 from .base import get_env_variable
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-g@1r1st6we014y7#^n6d-$e)fcfj%ba=!h0oib^^ni4@w(&*97"
+SECRET_KEY = get_env_variable("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = get_env_variable("DEBUG")
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = get_env_variable("DJANGO_ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -85,15 +86,14 @@ WSGI_APPLICATION = "unnax.wsgi.application"
 #         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "unnax",
-        "USER": "postgres",
-        "PASSWORD": "your_password",
-        "HOST": "localhost",
-        "PORT": 5432,
+        "NAME": get_env_variable("DATABASE_NAME"),
+        "USER": get_env_variable("DATABASE_USER"),
+        "PASSWORD": get_env_variable("DATABASE_PASSWORD"),
+        "HOST": get_env_variable("DATABASE_HOST"),
+        "PORT": get_env_variable("DATABASE_PORT"),
     }
 }
 
@@ -189,5 +189,5 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+CELERY_BROKER_URL = get_env_variable("CELERY_BROKER")
+CELERY_RESULT_BACKEND = get_env_variable("CELERY_BROKER")

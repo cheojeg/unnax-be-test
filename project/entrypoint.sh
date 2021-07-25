@@ -10,6 +10,8 @@ then
     echo "PostgreSQL started"
 fi
 
+source env_variables
+python manage.py makemigrations
 python manage.py migrate
 python manage.py collectstatic --no-input --clear
 

@@ -4,29 +4,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from ..models import BankingData
-from ..models import Customer, Account, Statement
-from .serializers import CustomerSerializer, StatementSerializer, AccountSerializer
-from ..scripts import Scraping
-from ..task import create_task
+from ..models import Customer, Account
+from .serializers import CustomerSerializer, AccountSerializer
+from ..task import get_banking_data
 from celery.result import AsyncResult
 
+import logging
 
-class WSUNNAX(Scraping):
-    def save_data(self, code):
-        bkd = BankingData.objects.get(code=code)
-        customer = Customer.objects.create(banking_data=bkd, **self.data["customer"])
-        for ac in self.data["accounts"]:
-            statements = ac.pop("statements")
-            account = Account.objects.create(**ac, customer=customer)
-            Statement.objects.bulk_create(
-                [Statement(**s, account=account) for s in statements]
-            )
-        bkd = BankingData.objects.get(code=code)
-        bkd.status = "DONE"
-        bkd.save()
-
-    def __str__(self) -> str:
-        return f"WSUNNAX: {self.username} - {self.password}"
+logger = logging.getLogger(__name__)
 
 
 class ReadView(APIView):
@@ -34,15 +19,23 @@ class ReadView(APIView):
 
     def post(self, request, *args, **kwargs):
         try:
+            logger.info("Probando el logging")
             bkd = BankingData.objects.create(code=kwargs["code"])
             response = {"status": bkd.status}
             username = request.data["username"]
             password = request.data["password"]
-            task = create_task.delay(username, password, kwargs["code"])
+            task = get_banking_data.delay(username, password, kwargs["code"])
+            task_result = AsyncResult(task.id)
+            bkd.task_id = task.id
+            bkd.save()
+            logger.info(
+                f"Task Created {task.id} {task_result.status} {task_result.result}"
+            )
         except Exception as e:
             message = "Bad request, the search code must be unique"
             if "username" not in request.data or "password" not in request.data:
                 message = "Username and password are required."
+            logger.error(message)
             return Response({"message": message}, 400)
         return Response(response, 201)
 

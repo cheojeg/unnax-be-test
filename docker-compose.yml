@@ -20,16 +20,16 @@ services:
       - 1337:8000
     network_mode: host
     environment:
-      - DEBUG=1
-      - SECRET_KEY=dbaa1_i7%*3r9-=z-+_mz4r-!qeed@(-a_r(g@k8jo8y3r27%m
-      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
-      - CELERY_BROKER=redis://localhost:6379/0
-      - CELERY_BACKEND=redis://localhost:6379/0
-      - SQL_DATABASE=unnax_db
-      - SQL_USER=unnax_user
-      - SQL_PASSWORD=unnax_password
-      - SQL_HOST=db
-      - SQL_PORT=5432
+      - DEBUG=$DEBUG
+      - SECRET_KEY=$SECRET_KEY
+      - DJANGO_ALLOWED_HOSTS=$DJANGO_ALLOWED_HOSTS
+      - CELERY_BROKER=$CELERY_BROKER
+      - CELERY_BACKEND=$CELERY_BACKEND
+      - DATABASE_NAME=$DATABASE_NAME
+      - DATABASE_USER=$DATABASE_USER
+      - DATABASE_PASSWORD=$DATABASE_PASSWORD
+      - DATABASE_HOST=$DATABASE_HOST
+      - DATABASE_PORT=$DATABASE_PORT
     depends_on:
       - redis
       - db
@@ -40,11 +40,16 @@ services:
     volumes:
       - ./project:/usr/src/app
     environment:
-      - DEBUG=1
-      - SECRET_KEY=dbaa1_i7%*3r9-=z-+_mz4r-!qeed@(-a_r(g@k8jo8y3r27%m
-      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
-      - CELERY_BROKER=redis://localhost:6379/0
-      - CELERY_BACKEND=redis://localhost:6379/0
+      - DEBUG=$DEBUG
+      - SECRET_KEY=$SECRET_KEY
+      - DJANGO_ALLOWED_HOSTS=$DJANGO_ALLOWED_HOSTS
+      - CELERY_BROKER=$CELERY_BROKER
+      - CELERY_BACKEND=$CELERY_BACKEND
+      - DATABASE_NAME=$DATABASE_NAME
+      - DATABASE_USER=$DATABASE_USER
+      - DATABASE_PASSWORD=$DATABASE_PASSWORD
+      - DATABASE_HOST=$DATABASE_HOST
+      - DATABASE_PORT=$DATABASE_PORT
     depends_on:
       - web
       - redis
@@ -56,11 +61,16 @@ services:
     ports:
       - 5555:5555
     environment:
-      - DEBUG=1
-      - SECRET_KEY=dbaa1_i7%*3r9-=z-+_mz4r-!qeed@(-a_r(g@k8jo8y3r27%m
-      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
-      - CELERY_BROKER=redis://localhost:6379/0
-      - CELERY_BACKEND=redis://localhost:6379/0
+      - DEBUG=$DEBUG
+      - SECRET_KEY=$SECRET_KEY
+      - DJANGO_ALLOWED_HOSTS=$DJANGO_ALLOWED_HOSTS
+      - CELERY_BROKER=$CELERY_BROKER
+      - CELERY_BACKEND=$CELERY_BACKEND
+      - DATABASE_NAME=$DATABASE_NAME
+      - DATABASE_USER=$DATABASE_USER
+      - DATABASE_PASSWORD=$DATABASE_PASSWORD
+      - DATABASE_HOST=$DATABASE_HOST
+      - DATABASE_PORT=$DATABASE_PORT
     depends_on:
       - web
       - redis
@@ -70,72 +80,3 @@ services:
   redis:
     image: redis:6-alpine
     network_mode: host
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# version: '3.3'
-
-# services:
-#   web:
-#     build: ./project
-#     command: python manage.py runserver 0.0.0.0:8000
-#     volumes:
-#       - ./project:/usr/src/app/
-#     ports:
-#       - 1337:8000
-#     environment:
-#       - DEBUG=1
-#       - SECRET_KEY=dbaa1_i7%*3r9-=z-+_mz4r-!qeed@(-a_r(g@k8jo8y3r27%m
-#       - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
-#       - CELERY_BROKER=redis://redis:6379/0
-#       - CELERY_BACKEND=redis://redis:6379/0
-
-    # extra_hosts:
-    #   - "localhost1:10.0.75.1"
-    # depends_on:
-    #   - redis
-
-#   celery:
-#     build: ./project
-#     command: celery worker --app=unnax --loglevel=info --logfile=logs/celery.log
-#     volumes:
-#       - ./project:/usr/src/app
-#     environment:
-#       - DEBUG=1
-#       - SECRET_KEY=dbaa1_i7%*3r9-=z-+_mz4r-!qeed@(-a_r(g@k8jo8y3r27%m
-#       - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
-#       - CELERY_BROKER=redis://redis:6379/0
-#       - CELERY_BACKEND=redis://redis:6379/0
-#     depends_on:
-#       - web
-#       - redis
-
-#   redis:
-#     image: redis:6-alpine
-
-#   dashboard:
-#     build: ./project
-#     command:  flower -A unnax --port=5555 --broker=redis://redis:6379/0
-#     ports:
-#       - 5555:5555
-#     environment:
-#       - DEBUG=1
-#       - SECRET_KEY=dbaa1_i7%*3r9-=z-+_mz4r-!qeed@(-a_r(g@k8jo8y3r27%m
-#       - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
-#       - CELERY_BROKER=redis://redis:6379/0
-#       - CELERY_BACKEND=redis://redis:6379/0
-#     depends_on:
-#       - web
-#       - redis
-#       - celery

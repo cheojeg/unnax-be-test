@@ -25,6 +25,7 @@ class BankingData(TimeStampedModel):
         ERROR = "ERROR", "ERROR"
 
     code = models.CharField(max_length=50, unique=True, db_index=True, default="")
+    task_id = models.CharField(max_length=250, blank=True, null=True, default="")
     status = models.CharField(
         max_length=30, choices=States.choices, default=States.PENDING
     )

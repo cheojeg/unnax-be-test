@@ -6,7 +6,7 @@ from .models import BankingData, Customer, Account, Statement
 
 @admin.register(BankingData)
 class BankingDataAdmin(admin.ModelAdmin):
-    list_display = ("id", "code", "status", "created", "modified")
+    list_display = ("id", "code", "status", "task_id", "created", "modified")
     list_filter = ("status", "created", "modified")
 
 
