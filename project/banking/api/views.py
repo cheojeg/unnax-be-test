@@ -40,9 +40,10 @@ class ReadView(APIView):
             password = request.data["password"]
             task = create_task.delay(username, password, kwargs["code"])
         except Exception as e:
-            return Response(
-                {"message": "Bad request, the search code must be unique"}, 400
-            )
+            message = "Bad request, the search code must be unique"
+            if "username" not in request.data or "password" not in request.data:
+                message = "Username and password are required."
+            return Response({"message": message}, 400)
         return Response(response, 201)
 
     def get(self, request, **kwargs):
@@ -59,3 +60,8 @@ class ReadView(APIView):
         if bkd.status == "ERROR":
             return Response({"message": "The data extraction has fail"}, 500)
         return Response(response)
+
+    def delete(self, request, **kwargs):
+        bkd = get_object_or_404(BankingData, code=kwargs["code"])
+        bkd.delete()
+        return Response(status=204)
