@@ -1,0 +1,99 @@
+{
+	"info": {
+		"_postman_id": "a3983b52-c843-4bb8-a85f-6807c6d5d291",
+		"name": "Unnax BE Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8000/read/1234567",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"Y3216434F\", \n    \"password\": \"pperez2018\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/read/1234567",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"read",
+						"1234567"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/read/1234567",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/read/1234567",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"read",
+						"1234567"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/read/1234567",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/read/1234567",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"read",
+						"1234567"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

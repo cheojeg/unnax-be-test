@@ -31,7 +31,7 @@ class Scraping:
             response = response.post(url, headers=self.headers, data=payload)
             cookies = response.request.headers.get("Cookie")
             self.headers["Cookie"] = cookies
-        except:
+        except Exception as e:
             return False
         return cookies
 
@@ -48,7 +48,7 @@ class Scraping:
             self.data["customer"]["address"] = customer_data[2].text
             self.data["customer"]["doc"] = self.username
             self.data["customer"]["participation"] = "Titular"
-        except:
+        except Exception as e:
             return False
         return True
 
@@ -76,7 +76,7 @@ class Scraping:
                 response = requests.request(
                     "GET",
                     f"{self.unnax_base_url}{statements_url}",
-                    headers={"Cookie": self.headers["Cookie"]},
+                    headers=self.headers,
                 )
                 soup = BeautifulSoup(response.text, "html.parser")
                 account_statements = [
@@ -142,7 +142,6 @@ class Scraping:
         customer_phone = customer_data[0].text
         customer_email = customer_data[1].text
         customer_address = customer_data[2].text
-
         currencies = {
             "€": "EUR",
             "$": "USD",
