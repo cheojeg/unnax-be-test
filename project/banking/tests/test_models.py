@@ -1,6 +1,6 @@
 import json
 import pytest
-from .models import BankingData, Customer, Account, Statement
+from banking.models import BankingData, Customer, Account, Statement
 
 pytestmark = pytest.mark.django_db
 
@@ -63,7 +63,7 @@ staments_data = [
 def test_banking_data_model() -> None:
     bkd = BankingData.objects.create(code="code_test")
     assert bkd.__str__() == "code_test"
-    bkd_count = BankingData.objects.filter(code="code_test")
+    bkd_count = BankingData.objects.filter(code="code_test").count()
     assert bkd_count == 1
 
 
