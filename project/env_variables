@@ -1,0 +1,10 @@
+export DEBUG=1
+export SECRET_KEY="ud#*-eq=ji^&-m3qu0-^*e89)_uw*+1e5usvsw$l=s4#(4qnvs"
+export DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,[::1]
+export CELERY_BROKER="redis://localhost:6379/0"
+export CELERY_BACKEND="redis://localhost:6379/0"
+export DATABASE_NAME=<database_name>
+export DATABASE_USER=<database_user>
+export DATABASE_PASSWORD=<database_password>
+export DATABASE_HOST=localhost
+export DATABASE_PORT=<database_port>
