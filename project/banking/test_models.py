@@ -1,17 +1,16 @@
-from banking.models import BankingData, Customer
-from typing import List
-
+import json
 import pytest
+from .models import BankingData, Customer, Account
 
-from banking.utils import WSUNNAX
+pytestmark = pytest.mark.django_db
 
-test_data = {
+model_data = {
     "customer": {
-        "name": "Pepito Perez",
-        "phone": "+34644323221",
-        "email": "pepito@perez.com",
+        "name": "Jose Garcia",
+        "phone": "+18498899154",
+        "email": "cheojeg@unnax.com",
         "address": "Carrer de Girona, 90, 08009 Barcelona",
-        "doc": "Y3216434F",
+        "doc": "v191944334",
         "participation": "Titular",
     },
     "accounts": [
@@ -100,14 +99,22 @@ test_data = {
     ],
 }
 
-model_test_data = test_data
+
+def test_banking_data_model() -> None:
+    bkd = BankingData.objects.create(code="code_test")
+    assert bkd.__str__() == "code_test"
 
 
-@pytest.fixture
-def banking_data() -> BankingData:
-    BankingData.objects.create(code="fixture")
-    ws = WSUNNAX("username", "password")
-    ws.data = test_data
-    ws.save_data("fixture")
-    bkd = BankingData.objects.get(code="fixture")
-    return bkd
+def test_customer_model() -> None:
+    bkd = BankingData.objects.create(code="code_test")
+    customer_count = Customer.objects.filter(banking_data__code=bkd.code).count()
+    assert customer_count == 0
+    customer = Customer.objects.create(banking_data=bkd, **model_data["customer"])
+    assert customer.name == model_data["customer"]['name']
+    assert customer.address == model_data["customer"]['address']
+    assert customer.phone == model_data["customer"]['phone']
+    assert customer.email == model_data["customer"]['email']
+    assert customer.doc == model_data["customer"]['doc']
+    assert customer.participation == model_data["customer"]['participation']
+    customer_count = Customer.objects.filter(banking_data__code=bkd.code).count()
+    assert customer_count == 1

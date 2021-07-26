@@ -2,9 +2,7 @@ import requests
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import viewsets
-from ..models import BankingData
-from ..models import Customer, Account
+from ..models import BankingData, Customer, Account
 from .serializers import CustomerSerializer, AccountSerializer
 from ..task import get_banking_data
 from celery.result import AsyncResult

@@ -79,12 +79,3 @@ def test_get_code_not_exists_should_fail(client) -> None:
     response_content = json.loads(response.content)
     assert response.status_code == 404
     assert response_content == {"detail": "Not found."}
-
-
-# def test_delete_code_exists_should_succeed(client, banking_delete_data) -> None:
-#     # customer = Customer.objects.get(banking_data__code=banking_data.code)
-#     print("AQUIIII!!!!!!!!!")
-#     print(banking_delete_data.code)
-#     read_url = reverse("read", kwargs={"code": banking_delete_data.code})
-#     response = client.delete(path=read_url)
-#     assert 204 == 204
