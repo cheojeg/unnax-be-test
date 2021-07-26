@@ -9,3 +9,4 @@ requests
 beautifulsoup4==4.9.3
 django-extensions
 psycopg2-binary>=2.8
+responses

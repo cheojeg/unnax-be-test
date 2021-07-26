@@ -17,7 +17,6 @@ class ReadView(APIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            logger.info("Probando el logging")
             bkd = BankingData.objects.create(code=kwargs["code"])
             response = {"status": bkd.status}
             username = request.data["username"]

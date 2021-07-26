@@ -100,8 +100,6 @@ test_data = {
     ],
 }
 
-model_test_data = test_data
-
 
 @pytest.fixture
 def banking_data() -> BankingData:
