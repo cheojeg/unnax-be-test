@@ -10,8 +10,6 @@ then
     echo "PostgreSQL started"
 fi
 
-mkdir static
-mkdir logs
 source env_variables
 python manage.py makemigrations
 python manage.py migrate

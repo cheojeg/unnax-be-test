@@ -1,0 +1,11 @@
+[2021-07-26 23:47:59,947: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2021-07-26 23:47:59,961: INFO/MainProcess] mingle: searching for neighbors
+[2021-07-26 23:48:00,990: INFO/MainProcess] mingle: all alone
+[2021-07-26 23:48:01,026: WARNING/MainProcess] /usr/local/lib/python3.9/site-packages/celery/fixups/django.py:205: UserWarning: Using settings.DEBUG leads to a memory
+            leak, never use this setting in production environments!
+  warnings.warn('''Using settings.DEBUG leads to a memory
+[2021-07-26 23:48:01,026: INFO/MainProcess] celery@cheojeg-GE62VR-6RF ready.
+[2021-07-26 23:48:05,828: INFO/MainProcess] Events of group {task} enabled by remote.
+[2021-07-26 23:49:39,795: INFO/MainProcess] Received task: banking.task.get_banking_data[6b5e673c-d9f2-4564-8363-f7d14975bd6a]  
+[2021-07-26 23:49:42,188: INFO/ForkPoolWorker-7] The task get_banking_d has finished successfully, values username: Y3216434F password: pperez2018 code: 1234567554
+[2021-07-26 23:49:42,190: INFO/ForkPoolWorker-7] Task banking.task.get_banking_data[6b5e673c-d9f2-4564-8363-f7d14975bd6a] succeeded in 2.3932554299990443s: True
