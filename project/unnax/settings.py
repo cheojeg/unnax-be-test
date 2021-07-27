@@ -140,14 +140,6 @@ LOGGING = {
             "backupCount": 2,
             "formatter": "verbose",
         },
-        "dev": {
-            "level": "DEBUG",
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": "logs/dev.log",
-            "maxBytes": 100000,
-            "backupCount": 2,
-            "formatter": "verbose",
-        },
     },
     "loggers": {
         "django": {

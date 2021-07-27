@@ -1,0 +1,6 @@
+[2021-07-26 23:47:58,828] INFO  autoreload 9 140425023650632 Watching for file changes with StatReloader
+[2021-07-26 23:48:10,107] INFO  basehttp 9 140424969984824 "GET /admin/ HTTP/1.1" 200 7995
+[2021-07-26 23:49:39,805] INFO  views 9 140424966753080 Task Created 6b5e673c-d9f2-4564-8363-f7d14975bd6a PENDING None
+[2021-07-26 23:49:39,806] INFO  basehttp 9 140424966753080 "POST /read/1234567554 HTTP/1.1" 201 20
+[2021-07-26 23:49:42,188] INFO  task 16 140109728783176 The task get_banking_d has finished successfully, values username: Y3216434F password: pperez2018 code: 1234567554
+[2021-07-26 23:49:44,628] INFO  basehttp 9 140424966753080 "GET /read/1234567554 HTTP/1.1" 200 1274
